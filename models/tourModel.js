@@ -37,11 +37,11 @@ const toursSchema = new mongoose.Schema({
   summary: {
     type: String,
     trim: true,
-    required: [true, 'A tour must have a cover description'],
+    required: true,
   },
   description: {
     type: String,
-    trim: true,
+    trim: [true, 'A tour must have a cover description'],
   },
   imageCover: {
     type: String,
