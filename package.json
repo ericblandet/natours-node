@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "nodemon server.js",
-    "start:prod": "NODE_ENV=production nodemon server.js"
+    "start:prod": "NODE_ENV=production nodemon server.js",
+    "debug": "ndb server.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
     "express": "^4.17.1",
     "mongoose": "^5.11.13",
     "morgan": "^1.10.0",
+    "nodemon": "^2.0.7",
     "slugify": "^1.4.6",
     "validator": "^13.5.2"
   },
@@ -34,6 +36,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-react": "^7.22.0",
+    "ndb": "^1.1.5",
     "prettier": "^2.2.1"
   },
   "engines": {

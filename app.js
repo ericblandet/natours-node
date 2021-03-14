@@ -18,11 +18,6 @@ app.use(express.json());
 app.use(express.static(`${__dirname}/public`));
 
 app.use((req, res, next) => {
-  console.log('Hello from the middleware 🤯');
-  next();
-});
-
-app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
 });
@@ -31,5 +26,13 @@ app.use((req, res, next) => {
 
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
+
+// If no route is hit, 'false route' handler :
+app.all('*', (req, res, nexe) => {
+  res.status(404).json({
+    status: 'fail',
+    message: `Can't find ${req.originalUrl} on this server 🤷‍♂️ !`,
+  });
+}); // all => hit all the verbs, * => all the url
 
 module.exports = app;
