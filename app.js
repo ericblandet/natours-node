@@ -2,7 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 
 const AppError = require('./utils/appError');
-const globalErrorHandler = require('./controller/errorController');
+const globalErrorHandler = require('./controllers/errorController');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 
@@ -31,9 +31,9 @@ app.use('/api/v1/users', userRouter);
 
 // If no route is hit, 'false route' handler :
 app.all('*', (req, res, next) => {
-  next(new AppError(`Can't find ${req.originalUrl} on this server 🤷‍♂️ !`, 404));
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 }); // all => hit all the verbs, * => all the url
 
-app.use(globalErrorHandler)
+app.use(globalErrorHandler);
 
 module.exports = app;
