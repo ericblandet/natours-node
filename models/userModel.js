@@ -17,10 +17,14 @@ const userSchema = new mongoose.Schema({
   photo: {
     type: String,
   },
+  passwordChangedAt: {
+    type: Date,
+  },
   password: {
     type: String,
     required: [true, 'Please provide a password'],
     minlength: [8, 'Minimum length is 8 characters'],
+    select: false,
   },
   passwordConfirm: {
     type: String,
@@ -42,6 +46,23 @@ userSchema.pre('save', async function (next) {
 
   this.passwordConfirm = undefined; // we should not store the password confirmation !!
 });
+
+userSchema.methods.correctPassword = async function (
+  candidatePassword,
+  userPassword
+) {
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
+
+userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
+  if (this.passwordChangedAt) {
+    const changedTimestamp = this.passwordChangedAt.getTime() / 1000;
+    return JWTTimestamp < changedTimestamp;
+  }
+
+  // False means NOT changed
+  return false;
+};
 
 const User = mongoose.model('User', userSchema);
 
