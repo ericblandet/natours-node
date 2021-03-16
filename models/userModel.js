@@ -17,8 +17,10 @@ const userSchema = new mongoose.Schema({
   photo: {
     type: String,
   },
-  passwordChangedAt: {
-    type: Date,
+  role: {
+    type: String,
+    enum: ['user', 'guide', 'lead-guide', 'admin'],
+    default: 'user',
   },
   password: {
     type: String,
@@ -36,6 +38,9 @@ const userSchema = new mongoose.Schema({
       },
       message: 'You misspelled your password',
     },
+  },
+  passwordChangedAt: {
+    type: Date,
   },
 });
 
