@@ -49,6 +49,11 @@ const userSchema = new mongoose.Schema({
   passwordResetExpires: {
     type: String,
   },
+  active: {
+    type: Boolean,
+    default: true,
+    select: false,
+  },
 });
 
 userSchema.pre('save', async function (next) {
@@ -59,13 +64,18 @@ userSchema.pre('save', async function (next) {
   this.passwordConfirm = undefined; // we should not store the password confirmation !!
 });
 
-userSchema.pre('save', function(next) {
-  if (!this.isModified('password') || this.isNew) return next();
-  
+userSchema.pre('save', function (next) {
+  if (!this.isModified('password') || this.isNew) return next();
+
   this.passwordChangedAt = Date.now() - 1000; // just to be sure that this timestamp is less than the token creation (which can be faster)
   next();
-})
+});
 
+userSchema.pre(/^find/, function (next) {
+  // this points to the current Query
+  this.find({ active: { $ne: false } });
+  next();
+});
 
 userSchema.methods.correctPassword = async function (
   candidatePassword,
